@@ -1,0 +1,6 @@
+name: NMLEffects
+version: '${version}'
+
+main: io.github.NoOne.nMLEffects.NMLEffects
+api-version: '26.3'
+load: POSTWORLD

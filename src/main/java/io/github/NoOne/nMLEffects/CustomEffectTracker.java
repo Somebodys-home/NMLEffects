@@ -82,7 +82,7 @@ public class CustomEffectTracker {
     }
 
     public static void removeCustomEffect(Player player, CustomEffect customEffect) {
-        ArrayList<CustomEffect> effects = customEffects.get(player.getUniqueId());
+        ArrayList<CustomEffect> effects = customEffects.getOrDefault(player.getUniqueId(), new ArrayList<>());
         Iterator<CustomEffect> iterator = effects.iterator();
 
         while (iterator.hasNext()) {

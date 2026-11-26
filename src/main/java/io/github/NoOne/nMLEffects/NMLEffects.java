@@ -10,6 +10,15 @@ public final class NMLEffects extends JavaPlugin {
         instance = this;
 
         CustomEffectTracker.showEffectsTask();
+        CustomEffectTracker.tickDownEffectsTask();
+
+        getCommand("giveEffect").setExecutor(new GiveEffectCommand());
+        getCommand("removeEffect").setExecutor(new RemoveEffectCommand());
+    }
+
+    @Override
+    public void onDisable() {
+        CustomEffectTracker.clearEffectMap();
     }
 
     public static NMLEffects getInstance() {

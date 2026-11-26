@@ -6,3 +6,11 @@ api-version: '26.3'
 load: POSTWORLD
 depend:
   - NMLPlayerStats
+  - NMLItems
+commands:
+  giveEffect:
+    description: Gives an effect to the given player
+    usage: /<command> <stat> <amount>
+  removeEffect:
+    description: Removes an effect from the given player
+    usage: /<command> <stat> <amount>

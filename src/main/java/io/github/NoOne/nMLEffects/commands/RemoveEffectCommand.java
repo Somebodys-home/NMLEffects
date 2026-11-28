@@ -1,6 +1,8 @@
-package io.github.NoOne.nMLEffects;
+package io.github.NoOne.nMLEffects.commands;
 
 import io.github.NoOne.nMLCommands.CompletionFormatter;
+import io.github.NoOne.nMLEffects.CustomEffect;
+import io.github.NoOne.nMLEffects.CustomEffectTracker;
 import io.github.NoOne.nMLPlayerStats.statSystem.PlayerStat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiveEffectCommand implements CommandExecutor, TabCompleter, CompletionFormatter {
+public class RemoveEffectCommand implements CommandExecutor, TabCompleter, CompletionFormatter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (sender instanceof Player player) {
@@ -25,7 +27,7 @@ public class GiveEffectCommand implements CommandExecutor, TabCompleter, Complet
             if (playerStat == null) {
                 player.sendMessage("§c" + stat + " is not a stat.");
             } else {
-                CustomEffectTracker.addCustomEffect(player, new CustomEffect(playerStat, value, seconds));
+                CustomEffectTracker.removeCustomEffect(player, new CustomEffect(playerStat, value, seconds));
             }
         }
 

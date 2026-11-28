@@ -57,7 +57,7 @@ public class CustomEffect {
         String changeString;
 
         if (change < 0) {
-            changeString = "-";
+            changeString = ":";
         } else {
             changeString = "+";
         }

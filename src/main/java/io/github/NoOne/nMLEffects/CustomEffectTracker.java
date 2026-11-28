@@ -22,23 +22,25 @@ public class CustomEffectTracker {
             @Override
             public void run() {
                 for (UUID uuid : customEffects.keySet()) {
-                    Player player = Bukkit.getPlayer(uuid);
-                    Component header = Component
-                            .text("Effects:", NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD)
-                            .appendNewline();
+                    if (Bukkit.getPlayer(uuid) != null) {
+                        Player player = Bukkit.getPlayer(uuid);
+                        Component header = Component
+                                .text("Effects:", NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD)
+                                .appendNewline();
 
-                    Component footer = Component.empty().append(header);
-                    ArrayList<CustomEffect> effects = customEffects.get(uuid);
+                        Component footer = Component.empty().append(header);
+                        ArrayList<CustomEffect> effects = customEffects.get(uuid);
 
-                    for (CustomEffect customEffect : effects) {
-                        if (effects.getFirst().equals(customEffect)) { // if its the first custom effect then dont include a space behind it
-                            footer = footer.append(customEffect.toComponent());
-                        } else {
-                            footer = footer.append(Component.text(" ")).append(customEffect.toComponent());
+                        for (CustomEffect customEffect : effects) {
+                            if (effects.getFirst().equals(customEffect)) { // if its the first custom effect then dont include a space behind it
+                                footer = footer.append(customEffect.toComponent());
+                            } else {
+                                footer = footer.append(Component.text(" ")).append(customEffect.toComponent());
+                            }
                         }
-                    }
 
-                    player.sendPlayerListFooter(footer);
+                        player.sendPlayerListFooter(footer);
+                    }
                 }
             }
         }.runTaskTimer(nmlEffects, 0, 20);
@@ -52,22 +54,26 @@ public class CustomEffectTracker {
 
                 while (mapIterator.hasNext()) {
                     UUID uuid = mapIterator.next();
-                    ArrayList<CustomEffect> effects = customEffects.get(uuid);
 
-                    // tick down the seconds for every effect
-                    effects.forEach(CustomEffect::tickDown);
+                    if (Bukkit.getPlayer(uuid) != null && Bukkit.getPlayer(uuid).isOnline()) {
+                        ArrayList<CustomEffect> effects = customEffects.get(uuid);
 
-                    for (CustomEffect customEffect : effects) {
-                        if (customEffect.isMarkedForRemoval()) { // remove the stat change if the effect is marked for removal by tick down
-                            Bukkit.getPluginManager().callEvent(new StatChangeEvent(Bukkit.getPlayer(uuid), customEffect.getPlayerStat(), -customEffect.getChange()));
+                        // tick down the seconds for every effect
+                        effects.forEach(CustomEffect::tickDown);
+
+                        for (CustomEffect customEffect : effects) {
+                            if (customEffect.isMarkedForRemoval()) { // remove the stat change if the effect is marked for removal by tick down
+                                Bukkit.getPluginManager().callEvent(new StatChangeEvent(Bukkit.getPlayer(uuid), customEffect.getPlayerStat(), -customEffect.getChange()));
+                            }
+                        }
+
+                        effects.removeIf(CustomEffect::isMarkedForRemoval);
+
+                        if (effects.isEmpty()) {
+                            mapIterator.remove();
                         }
                     }
 
-                    effects.removeIf(CustomEffect::isMarkedForRemoval);
-
-                    if (effects.isEmpty()) {
-                        mapIterator.remove();
-                    }
                 }
             }
         }.runTaskTimer(nmlEffects, 0, 20);
@@ -96,13 +102,7 @@ public class CustomEffectTracker {
         }
     }
 
-    public static void clearEffectMap() {
-        for (UUID uuid : customEffects.keySet()) {
-            for (CustomEffect customEffect : customEffects.get(uuid)) {
-                removeCustomEffect(Bukkit.getPlayer(uuid), customEffect);
-            }
-        }
-
-        customEffects.clear();
+    public static HashMap<UUID, ArrayList<CustomEffect>> getCustomEffects() {
+        return customEffects;
     }
 }

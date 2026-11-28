@@ -89,7 +89,7 @@
         <dependency>
             <groupId>com.github.Somebodys-home</groupId>
             <artifactId>NMLConfig</artifactId>
-            <version>b35dfb578d</version>
+            <version>eec34b3a04</version>
         </dependency>
         <dependency>
             <groupId>com.github.Somebodys-home</groupId>

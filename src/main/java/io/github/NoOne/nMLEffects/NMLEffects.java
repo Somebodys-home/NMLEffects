@@ -15,10 +15,7 @@ public final class NMLEffects extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
         savedEffectsConfig = new ConfigTemplate(this, "effects");
-        savedEffectsConfig.loadConfig();
-
         savedEffectsManager = new SavedEffectsManager(savedEffectsConfig);
 
         CustomEffectTracker.showEffectsTask();
